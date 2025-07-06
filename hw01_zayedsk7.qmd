@@ -1,0 +1,97 @@
+---
+title: "Review"
+format: html
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+
+1.  **Clone the Homework Repository**\
+    Clone the GitHub repository containing the homework file to your **local machine**.
+
+2.  **Rename the File**\
+    Rename the `.qmd` file from `hw01.qmd` to: `hw01_yourusername.qmd`.\
+
+For example: `hw01_semiyari.qmd`
+
+### Working on Your Homework
+
+-   As you complete each part of the homework:
+
+    -   **Stage** and **commit** your `.qmd` file *after each question/sub-question*, such as `1.1`, `1.2`, etc.\
+    -   **Render** your `.qmd` file to **HTML only** (no PDF or Word formats).\
+    -   **Push** your updates to GitHub after completing each **main question**, such as `1.0`, `2.0`, etc.
+
+> Committing and pushing to GitHub **are graded components** of this assignment.
+
+## Final Checks Before Submission
+
+-   **Re-render** to HTML before your final commit and push.\
+
+-   **Check your output:**\
+
+    -   Make sure **all images display correctly**.\
+    -   Avoid including **excessive output or large datasets** unless asked.
+
+## Final Submission
+
+Once you have finished and pushed your final version:
+
+-   Copy the link of your **GitHub Pages site** (where the rendered HTML is published).
+-   **Post the link** to the Canvas assignment submission page.
+
+```{r}
+# Install pacman if it's not already installed
+if (!require("pacman")) install.packages("pacman")
+
+# Use pacman to install (if needed) and load the packages
+pacman::p_load(pacman, tidyverse,
+               nycflights13)
+```
+
+-   Consider the data in the nycflights13 package.
+
+```{r}
+library(nycflights13)
+
+head(flights)
+```
+
+
+-   **Problem 2**: Is there a relationship between the age of a plane and its delays?
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+
+flights_with_age <- flights %>%
+  left_join(planes, by = "tailnum") %>%
+  mutate(plane_age = 2013 - year.y)  
+
+flights_clean <- flights_with_age %>%
+  filter(!is.na(dep_delay), !is.na(plane_age))
+
+flights_clean %>%
+  ggplot(aes(x = plane_age, y = dep_delay)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  labs(
+    title = "Relationship Between Plane Age and Departure Delay",
+    x = "Plane Age (years)",
+    y = "Departure Delay (minutes)"
+  )
+
+```
+```{r}
+model <- lm(dep_delay ~ plane_age, data = flights_clean)
+summary(model)
+
+```
+The linear regression shows a statistically significant but very weak relationship between plane age and departure delay. The coefficient for plane_age is -0.097, meaning that for each additional year of a plane’s age, the expected departure delay decreases by about 0.1 minutes. While this result is statistically significant (p < 0.001), the R-squared value is just 0.0002, indicating that plane age explains almost none of the variation in delay times. In short, the relationship is real but not meaningful in practice.
+
+
+-   **Problem 3**: Find the 10 days of the year that have the highest median departure delay, then select all flights from those 10 days.
