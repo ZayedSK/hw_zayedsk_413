@@ -61,7 +61,6 @@ library(nycflights13)
 head(flights)
 ```
 
-
 -   **Problem 2**: Is there a relationship between the age of a plane and its delays?
 
 ```{r}
@@ -86,12 +85,44 @@ flights_clean %>%
   )
 
 ```
+
 ```{r}
 model <- lm(dep_delay ~ plane_age, data = flights_clean)
 summary(model)
 
 ```
-The linear regression shows a statistically significant but very weak relationship between plane age and departure delay. The coefficient for plane_age is -0.097, meaning that for each additional year of a plane’s age, the expected departure delay decreases by about 0.1 minutes. While this result is statistically significant (p < 0.001), the R-squared value is just 0.0002, indicating that plane age explains almost none of the variation in delay times. In short, the relationship is real but not meaningful in practice.
 
+The linear regression shows a statistically significant but very weak relationship between plane age and departure delay. The coefficient for plane_age is -0.097, meaning that for each additional year of a plane’s age, the expected departure delay decreases by about 0.1 minutes. While this result is statistically significant (p \< 0.001), the R-squared value is just 0.0002, indicating that plane age explains almost none of the variation in delay times. In short, the relationship is real but not meaningful in practice.
 
 -   **Problem 3**: Find the 10 days of the year that have the highest median departure delay, then select all flights from those 10 days.
+
+```{r}
+flights_with_date <- flights %>%
+  mutate(date = as.Date(time_hour))
+
+top_10_delay_days <- flights_with_date %>%
+  group_by(date) %>%
+  summarize(median_dep_delay = median(dep_delay, na.rm = TRUE)) %>%
+  arrange(desc(median_dep_delay)) %>%
+  slice_head(n = 10)
+
+flights_top10 <- flights_with_date %>%
+  filter(date %in% top_10_delay_days$date)
+
+head(flights_top10)
+
+```
+
+```{r}
+top_10_delay_days %>%
+  ggplot(aes(x = reorder(as.character(date), -median_dep_delay), y = median_dep_delay)) +
+  geom_col(fill = "red") +
+  labs(title = "Top 10 Days with Highest Median Departure Delay",
+       x = "Date",
+       y = "Median Departure Delay (min)") +
+  theme_minimal()
+
+```
+git add hw01_zayedsk7.qmd hw01_zayedsk7.html
+git commit -m "Final push with Problem 3 in .qmd and .html"
+git push
