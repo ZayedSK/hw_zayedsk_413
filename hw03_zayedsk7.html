@@ -213,6 +213,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Print out a summary of the tables in this database.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>SHOW <span class="kw">TABLES</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">airlines</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">airports</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">flights</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">planes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">weather</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li>Answer the following question using SQL.</li>
 </ul>
@@ -220,11 +250,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="problem-2-select-flights-from-a-specific-carrier">Problem 2: Select Flights from a Specific Carrier</h3>
 <p>Write a SQL query to find all flights from the carrier “United Air Lines Inc.”.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> airlines</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ON</span> flights.carrier <span class="op">=</span> airlines.carrier</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> airlines.name <span class="op">=</span> <span class="st">'United Air Lines Inc.'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> airlines</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ON</span> flights.carrier <span class="op">=</span> airlines.carrier</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> airlines.name <span class="op">=</span> <span class="st">'United Air Lines Inc.'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
@@ -516,9 +546,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="problem-3-count-the-number-of-flights-for-each-carrier">Problem 3: Count the Number of Flights for Each Carrier</h3>
 <p>Write a SQL query to count the total number of flights for each carrier.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> carrier, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> flight_count</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> carrier, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> flight_count</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
@@ -530,32 +560,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">EV</td>
-<td style="text-align: right;">54173</td>
+<td style="text-align: left;">WN</td>
+<td style="text-align: right;">12275</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">32729</td>
+<td style="text-align: left;">AS</td>
+<td style="text-align: right;">714</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">US</td>
-<td style="text-align: right;">20536</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">9E</td>
-<td style="text-align: right;">18460</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">YV</td>
-<td style="text-align: right;">601</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">48110</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">B6</td>
-<td style="text-align: right;">54635</td>
+<td style="text-align: left;">F9</td>
+<td style="text-align: right;">685</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OO</td>
@@ -569,6 +583,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">MQ</td>
 <td style="text-align: right;">26397</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">VX</td>
+<td style="text-align: right;">5162</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FL</td>
+<td style="text-align: right;">3260</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HA</td>
+<td style="text-align: right;">342</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EV</td>
+<td style="text-align: right;">54173</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -578,8 +608,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="remember-to-close-the-connection-when-you-are-done" class="level2">
 <h2 class="anchored" data-anchor-id="remember-to-close-the-connection-when-you-are-done">Remember to Close the connection When You Are Done</h2>
 <ul>
-<li>if the connection is open then you need to use <code>dbDisconnect()</code> function</li>
-<li>```{r disconnect, include=FALSE} dbDisconnect(practcon, shutdown = TRUE</li>
+<li><p>if the connection is open then you need to use <code>dbDisconnect()</code> function</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(practcon, <span class="at">shutdown =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
 </ul>
 </section>
 <section id="submission" class="level2">

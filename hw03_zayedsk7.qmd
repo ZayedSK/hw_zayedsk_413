@@ -102,8 +102,12 @@ Please note that a basic SQL code chunk looks like this (put SQL code between th
 
 Print out a summary of the tables in this database.
 
+```{sql, connection=practcon}
+SHOW TABLES;
+```
+
 ```{sql, connection=practcon, echo=FALSE, eval=FALSE}
-    DESCRIBE;
+    DESCRIBE flights;
 ```
 
 -   Answer the following question using SQL.
@@ -134,7 +138,11 @@ GROUP BY carrier;
 ## Remember to Close the connection When You Are Done
 
 -   if the connection is open then you need to use `dbDisconnect()` function
--   \`\`\`{r disconnect, include=FALSE} dbDisconnect(practcon, shutdown = TRUE
+
+    ```{r}
+    dbDisconnect(practcon, shutdown = TRUE)
+
+    ```
 
 ## Submission
 
