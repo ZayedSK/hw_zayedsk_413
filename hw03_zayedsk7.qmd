@@ -18,18 +18,18 @@ library(nycflights13)
 
 con <- dbConnect(duckdb(), dbdir = "flights.duckdb", read_only = FALSE)
 
-# Copy data into DuckDB
 dbWriteTable(con, "flights", flights)
 dbWriteTable(con, "airlines", airlines)
 dbWriteTable(con, "airports", airports)
 dbWriteTable(con, "planes", planes)
 dbWriteTable(con, "weather", weather)
 
-# Confirm tables are loaded
 dbListTables(con)
 
 
 ```
+
+#The Data would not upload properly and everytime i tried to show the table it would say 0 rows so i went on [https://data-science-master.github.io/lectures/data](https://data-science-master.github.io/lectures/data/flights.duckdb){.uri} and took the information and asked ChatGPT to help me to come up with this solution
 
 ## Instructions
 
@@ -149,13 +149,11 @@ WHERE airlines.name = 'United Air Lines Inc.';
 
 Write a SQL query to count the total number of flights for each carrier.
 
-
 ```{sql, connection=practcon}
 SELECT carrier, COUNT(*) AS flight_count
 FROM flights
 GROUP BY carrier;
 ```
-
 
 ## Remember to Close the connection When You Are Done
 
