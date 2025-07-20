@@ -1,0 +1,180 @@
+---
+title: "Functions-Iterations-Dates-purr"
+format: html
+editor: visual
+---
+
+## Instructions
+
+Complete the following exercises using the `lubridate` and `purrr` packages in R. Ensure that your solutions are optimized and use functional programming principles where applicable.
+
+1.  Load the necessary libraries.
+2.  Answer each question in separate R code chunks.
+3.  Provide detailed explanations for your approach.
+4.  Submit the rendered HTML file.
+
+## Exercise Functions:
+
+### Question 1
+
+Write a function (using r code and structure demonstrated in class) to calculate a z score for a given observed value, a mean, and a standard deviation value. And then use your function to find a z score for the following problem. (Research the internet to find the formula used to calculate a z score)\
+Observed value = 25.77, mean = 23.54, standard deviation = 2.442
+
+```{r}
+z_score <- function(observed, mean, sd) {
+  (observed - mean) / sd
+}
+
+z_score(25.77, 23.54, 2.442)
+
+```
+
+### Question 2
+
+Write a function to calculate the natural log of a number multiplied by the common log of the same number divided by the cube root of a given prime number, $\dfrac{\ln x \times \log x }{\sqrt[3]{p}}$.\
+Use your function to find the answer if the number to be used for both log expressions is 32 and the given prime number is 11, $x = 32, \;\;p=11$.\
+Also use R code to round your answer to the nearest tenth
+
+```{r}
+log_math <- function(x, p) {
+  result <- (log(x) * log10(x)) / (p^(1/3))
+  round(result, 1)  
+}
+
+log_math(32, 11)
+
+```
+
+### Question 3
+
+Use and show R coding to calculate the standard deviation for each variable of the data table `mtcars` using the `Special For Loop Method`, which includes three components:
+
+-   Output – an object to store the results
+
+-   Sequence – the set of items to loop through
+
+-   Body – the operations performed in each iteration
+
+```{r}
+std_devs <- c()
+
+for (var in names(mtcars)) {
+  std_devs[var] <- sd(mtcars[[var]])
+}
+
+std_devs
+
+```
+
+### Question 4:
+
+Write only one line of the code to return only the leap years fo years 2024, 3021, 2000 or 1800, 800, 5050, 600 and 7156. using subsetting with `[]` and without using built-in functions.
+
+```{r}
+c(2024, 3021, 2000, 1800, 800, 5050, 600, 7156)[(c(2024, 3021, 2000, 1800, 800, 5050, 600, 7156) %% 4 == 0 & 
+    c(2024, 3021, 2000, 1800, 800, 5050, 600, 7156) %% 100 != 0) | 
+                                                  c(2024, 3021, 2000, 1800, 800, 5050, 600, 7156) %% 400 == 0]
+
+```
+
+## Advanced Date Manipulation with lubridate
+
+### Question 5:
+
+Generate a sequence of dates from **January 1, 2015** to **December 31, 2025**, spaced by every **two months**. Extract the **year**, **quarter**, and **ISO week number** for each date.
+
+```{r}
+library(lubridate)
+
+date_seq <- seq.Date(from = as.Date("2015-01-01"),
+                     to = as.Date("2025-12-31"),
+                     by = "2 months")
+
+data.frame(
+  date = date_seq,
+  year = year(date_seq),
+  quarter = quarter(date_seq),
+  iso_week = isoweek(date_seq)
+)
+
+```
+
+### Question 6:
+
+Given the following dates, compute the difference in **months** and **weeks** between each consecutive pair.
+
+
+```{r}
+sample_dates <- as.Date(c("2018-03-15", "2020-07-20", "2023-01-10", "2025-09-05"))
+
+month_diff <- interval(sample_dates[-length(sample_dates)], sample_dates[-1]) %/% months(1)
+week_diff <- difftime(sample_dates[-1], sample_dates[-length(sample_dates)], units = "weeks")
+
+data.frame(
+  start_date = sample_dates[-length(sample_dates)],
+  end_date = sample_dates[-1],
+  months_apart = month_diff,
+  weeks_apart = as.numeric(week_diff)
+)
+ #commit done
+```
+
+### Question 7: Higher-Order Functions with purrr
+Using `map()` and `map_dbl()`, compute the **mean**, **median**, and **standard deviation** for each numeric vector in the following list:
+  
+  ``` r
+num_lists <- list(c(4, 16, 25, 36, 49), c(2.3, 5.7, 8.1, 11.4), c(10, 20, 30, 40, 50))
+```
+
+```{r}
+library(purrr)
+
+num_lists <- list(c(4, 16, 25, 36, 49), c(2.3, 5.7, 8.1, 11.4), c(10, 20, 30, 40, 50))
+
+means <- map_dbl(num_lists, mean)
+medians <- map_dbl(num_lists, median)
+sds <- map_dbl(num_lists, sd)
+
+data.frame(
+  mean = means,
+  median = medians,
+  sd = sds
+)
+
+```
+
+
+### Question 8: Combining lubridate and purrr
+Given a list of mixed date formats, use `map()` and `possibly()` from `purrr` to safely convert them to **Date** format and extract the **month name**.
+
+``` r
+date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
+```
+
+```{r}
+date_strings <- list("2023-06-10", "2022/12/25", "15-Aug-2021", "InvalidDate")
+
+safe_parse <- possibly(function(x) parse_date_time(x, orders = c("ymd", "Ymd", "d-b-Y", "Y/m/d")), NA)
+
+map(date_strings, ~ month(safe_parse(.x), label = TRUE, abbr = FALSE))
+
+```
+
+
+## Submission
+
+-   Save your Quarto file after completing each problem, render it, then stage and commit the changes.\
+
+-   Include well-commented code and clear explanations.\
+
+-   Make at least **one commit per question**.\
+
+-   Submit the rendered file to **Canvas** and push it to your **GitHub repository**.\
+
+-   Provide the link to your GitHub repository in the **Canvas gradebook** as a text submission.\
+
+🔹 **Each problem is worth 10 points.**\
+
+🔹 You will receive an additional **20 points** if you correctly push your completed file to GitHub and make at least one commit for each question.\
+
+**Good luck!**
