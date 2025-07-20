@@ -11,26 +11,6 @@ knitr::opts_chunk$set(echo       = TRUE,
 ggplot2::theme_set(ggplot2::theme_bw() + ggplot2::theme(strip.background = ggplot2::element_rect(fill = "white")))
 ```
 
-```{r}
-library(DBI)
-library(duckdb)
-library(nycflights13)
-
-con <- dbConnect(duckdb(), dbdir = "flights.duckdb", read_only = FALSE)
-
-dbWriteTable(con, "flights", flights)
-dbWriteTable(con, "airlines", airlines)
-dbWriteTable(con, "airports", airports)
-dbWriteTable(con, "planes", planes)
-dbWriteTable(con, "weather", weather)
-
-dbListTables(con)
-
-
-```
-
-#The Data would not upload properly and everytime i tried to show the table it would say 0 rows so i went on [https://data-science-master.github.io/lectures/data](https://data-science-master.github.io/lectures/data/flights.duckdb){.uri} and took the information and asked ChatGPT to help me to come up with this solution
-
 ## Instructions
 
 Complete the following exercises using the appropriate packages in R. Ensure that your solutions are optimized and use functional programming principles where applicable.
@@ -64,22 +44,18 @@ Go to the following page [List of U.S. states and territories by population](htt
     library(dplyr)
     library(janitor)
 
-    # Step 1: Read the page
     url <- "https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_population"
     page <- read_html(url)
 
-    # Step 2: Extract the first table
     pop_df <- page %>%
       html_elements("table.wikitable") %>%
       .[[1]] %>%
       html_table()
 
-    # Step 3: Clean column names and fix header row
-    pop_df <- pop_df[-1, ] %>%    # Remove the duplicate header row
+    pop_df <- pop_df[-1, ] %>%    
       clean_names() %>%
       mutate(across(everything(), ~na_if(.x, "__")))
 
-    # Step 4: Check results
     str(pop_df)
     head(pop_df)
 
@@ -158,6 +134,7 @@ GROUP BY carrier;
 ## Remember to Close the connection When You Are Done
 
 -   if the connection is open then you need to use `dbDisconnect()` function
+-   \`\`\`{r disconnect, include=FALSE} dbDisconnect(practcon, shutdown = TRUE
 
 ## Submission
 
