@@ -81,6 +81,23 @@ head(emma_tokens, 10)
         -   `nrc` (joy)
         -   `afinn` (positive scores ≥ 1)
         -   `bing` (positive)
+```{r}
+library(tidytext)
+library(dplyr)
+
+nrc_joy <- get_sentiments("nrc") %>%
+  filter(sentiment == "joy") %>%
+  distinct(word)            # keep unique joy words
+
+afinn_pos <- get_sentiments("afinn") %>%
+  filter(value >= 1) %>%    # positive scores only
+  select(word, value)       # keep value for optional weighting later
+
+bing_pos <- get_sentiments("bing") %>%
+  filter(sentiment == "positive") %>%
+  distinct(word)
+
+```
 
     -   Join each with *Emma*'s text and:
 
