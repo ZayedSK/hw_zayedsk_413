@@ -100,6 +100,31 @@ bing_pos <- get_sentiments("bing") %>%
 ```
 
     -   Join each with *Emma*'s text and:
+    
+```{r}
+emma_nrc_counts <- emma_tokens %>%
+  inner_join(nrc_joy, by = "word") %>%
+  count(word, sort = TRUE)
+
+# AFINN positive (>=1)
+emma_afinn_counts <- emma_tokens %>%
+  inner_join(afinn_pos %>% select(word), by = "word") %>%  # keep just word to count frequency
+  count(word, sort = TRUE)
+
+# Bing positive
+emma_bing_counts <- emma_tokens %>%
+  inner_join(bing_pos, by = "word") %>%
+  count(word, sort = TRUE)
+
+# quick peek
+list(
+  nrc_head   = head(emma_nrc_counts, 10),
+  afinn_head = head(emma_afinn_counts, 10),
+  bing_head  = head(emma_bing_counts, 10)
+)
+
+```
+
 
         -   Count word frequency.
         -   Filter for frequently occurring words (`n > 50`).
