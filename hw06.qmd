@@ -62,6 +62,17 @@ head(emma_data, 10)
 2.  **Tokenization**
 
     -   Use `unnest_tokens()` to tokenize text into individual words.
+```{r}
+emma_tokens <- emma_data %>%
+  unnest_tokens(word, text) %>%          # break text into single words
+  filter(!str_detect(word, "^[0-9]+$")) %>%  # remove numbers
+  anti_join(stop_words, by = "word")     # remove common stop words
+
+# View the first few tokenized words
+head(emma_tokens, 10)
+
+```
+
 
 3.  **Sentiment Analysis**
 
