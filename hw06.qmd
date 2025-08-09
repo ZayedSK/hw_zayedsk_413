@@ -153,9 +153,10 @@ print(plot_bar(bing_top,  "Emma — Bing Positive (n > 50)"))
 library(wordcloud)
 set.seed(123)  # reproducible layout
 
-wordcloud(nrc_top$word,   nrc_top$n,   max.words = 100)
-wordcloud(afinn_top$word, afinn_top$n, max.words = 100)
-wordcloud(bing_top$word,  bing_top$n,  max.words = 100)
+wordcloud(nrc_top$word,   nrc_top$n,   max.words = 100, scale = c(1, 0.3))
+wordcloud(afinn_top$word, afinn_top$n, max.words = 100, scale = c(1, 0.3))
+wordcloud(bing_top$word,  bing_top$n,  max.words = 100, scale = c(1, 0.3))
+
 
 ```
         
