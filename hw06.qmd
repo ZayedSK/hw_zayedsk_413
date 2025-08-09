@@ -129,6 +129,27 @@ list(
         -   Count word frequency.
         -   Filter for frequently occurring words (`n > 50`).
         -   Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
+        
+```{r}
+thr <- 50
+
+nrc_top   <- emma_nrc_counts   %>% dplyr::filter(n > thr)
+afinn_top <- emma_afinn_counts %>% dplyr::filter(n > thr)
+bing_top  <- emma_bing_counts  %>% dplyr::filter(n > thr)
+
+plot_bar <- function(df, title) {
+  ggplot(df, aes(x = reorder(word, n), y = n)) +
+    geom_col() +
+    coord_flip() +
+    labs(x = NULL, y = "Count", title = title)
+}
+
+print(plot_bar(nrc_top,   "Emma — NRC Joy (n > 50)"))
+print(plot_bar(afinn_top, "Emma — AFINN Positive (n > 50)"))
+print(plot_bar(bing_top,  "Emma — Bing Positive (n > 50)"))
+
+```
+        
 
 4.  **Push to GitHub**
 
