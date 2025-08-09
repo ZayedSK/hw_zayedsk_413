@@ -13,9 +13,7 @@ ggplot2::theme_set(ggplot2::theme_bw() + ggplot2::theme(strip.background = ggplo
 
 **Title**: Exploring Joyful Language in Jane Austen’s *Emma* using Tidytext
 
-
 ### **Instructions**
-
 
 Complete the following exercises using the appropriate packages in R. Ensure that your solutions are optimized and use functional programming principles where applicable.
 
@@ -24,72 +22,88 @@ Complete the following exercises using the appropriate packages in R. Ensure tha
 3.  Provide detailed explanations for your approach.
 4.  Submit the rendered HTML file.
 
-
-
-
-
-
-
-
-####  **Objective**:
+#### **Objective**:
 
 Use the **`tidytext`** package and three different **sentiment lexicons** (`nrc`, `afinn`, `bing`) to explore **positive/joyful words** in *Emma* by Jane Austen. You will tokenize the text, apply sentiment filters, visualize frequent sentiment words using `ggplot2`, and create a word cloud.
 
-
 ### **Tasks**:
 
-1. **Data Preparation** 
+```{r}
+library(tidyverse)
+library(tidytext)
+library(janeaustenr)
+library(stringr)
+```
 
-   * Load the `austen_books()` dataset from the **`janeaustenr`** package.
-   * Group by book and detect chapter boundaries using regex.
-   * Create `linenumber` and `chapter` columns.
 
-2. **Tokenization** 
+1.  **Data Preparation**
 
-   * Use `unnest_tokens()` to tokenize text into individual words.
-   
+    -   Load the `austen_books()` dataset from the **`janeaustenr`** package.
+    -   Group by book and detect chapter boundaries using regex.
+    -   Create `linenumber` and `chapter` columns.
 
-3. **Sentiment Analysis** 
+```{r}
+emma_data <- austen_books() %>%
+  filter(book == "Emma") %>%                            # keep only Emma
+  group_by(book) %>%
+  mutate(
+    linenumber = row_number(),                          # line number within book
+    chapter = cumsum(str_detect(                        # detect chapter start
+      text,
+      regex("^chapter [\\divxlc]+$", ignore_case = TRUE)
+    ))
+  ) %>%
+  ungroup()
 
-   * Filter joy/positive words from **each** of the three sentiment lexicons:
+head(emma_data, 10)
 
-     * `nrc` (joy)
-     * `afinn` (positive scores ≥ 1)
-     * `bing` (positive)
-   * Join each with *Emma*'s text and:
+```
 
-     * Count word frequency.
-     * Filter for frequently occurring words (`n > 50`).
-     * Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
+2.  **Tokenization**
 
-4. **Push to GitHub** 
+    -   Use `unnest_tokens()` to tokenize text into individual words.
 
-   * Push your complete R script (`.R` file) to a **GitHub repository**.
-   * Your script should include:
+3.  **Sentiment Analysis**
 
-     * Data wrangling
-     * Sentiment filtering and joins
-     * Visualization code
-   * You must include **at least 5 meaningful commits** to document your workflow.
+    -   Filter joy/positive words from **each** of the three sentiment lexicons:
 
----
+        -   `nrc` (joy)
+        -   `afinn` (positive scores ≥ 1)
+        -   `bing` (positive)
+
+    -   Join each with *Emma*'s text and:
+
+        -   Count word frequency.
+        -   Filter for frequently occurring words (`n > 50`).
+        -   Visualize using a **bar chart** (`ggplot2`) and a **word cloud** (`wordcloud`).
+
+4.  **Push to GitHub**
+
+    -   Push your complete R script (`.R` file) to a **GitHub repository**.
+
+    -   Your script should include:
+
+        -   Data wrangling
+        -   Sentiment filtering and joins
+        -   Visualization code
+
+    -   You must include **at least 5 meaningful commits** to document your workflow.
+
+------------------------------------------------------------------------
+
 ## **Rubric 100 Points**
 
-| Category                                       | Points |
-| ---------------------------------------------- | ------ |
+| Category                                       | Points  |
+|------------------------------------------------|---------|
 | Step 1: Data wrangling (linenumber, chapter)   | 10      |
 | Step 2: Tokenization                           | 10      |
 | Step 3a: NRC sentiment analysis + plots        | 10      |
-| Step 3b: AFINN sentiment analysis + plots      | 10     |
+| Step 3b: AFINN sentiment analysis + plots      | 10      |
 | Step 3c: BING sentiment analysis + plots       | 10      |
 | Code readability, structure, and comments      | 10      |
 | Word cloud for each lexicon                    | 20      |
 | GitHub submission                              |         |
-| Commit history (at least 5 meaningful commits) | 20     |
+| Commit history (at least 5 meaningful commits) | 20      |
 | **Total**                                      | **100** |
 
-
-
-
 Good Luck!
-
